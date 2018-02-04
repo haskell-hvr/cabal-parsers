@@ -2,6 +2,7 @@ module Cabal.Parser.V200
     ( module X
     ) where
 
+import           Distribution.InstalledPackageInfo           as X (PError (..))
 import           Distribution.PackageDescription             as X
 import           Distribution.PackageDescription.Check       as X
 import           Distribution.PackageDescription.Parse       as X
