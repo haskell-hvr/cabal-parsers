@@ -20,7 +20,7 @@ library cabal-v200
   build-depends:
     array      >= 0.1 && < 0.6,
     base       >= 4.5 && < 5,
-    bytestring >= 0.9 && < 1,
+    bytestring >= 0.9 && < 0.11,
     containers >= 0.4 && < 0.6,
     deepseq    >= 1.3 && < 1.5,
     filepath   >= 1.3 && < 1.5,
@@ -146,14 +146,25 @@ library cabal-v200
     Language.Haskell.Extension
 
 library
-  build-depends:       base ^>= 4.10, cabal-v200
---  hs-source-dirs:      src
+  build-depends:       base
+                     , cabal-v200
+                     , Cabal ^>= 2.0
+                     , text  ^>= 1.2.3
+                     , bytestring
+
+  hs-source-dirs:      src
   default-language:    Haskell2010
 
+  exposed-modules:     Cabal.Parser
   reexported-modules:  Cabal.Parser.V200
 
+  ghc-options: -Wall
 
 executable test-parse
   default-language:    Haskell2010
-  build-depends:       base ^>= 4.10, cabal-parsers
+  build-depends:       base
+                     , bytestring
+                     , cabal-parsers
+                     , Cabal
+
   main-is: Main.hs
