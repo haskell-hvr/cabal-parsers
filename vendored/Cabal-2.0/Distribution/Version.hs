@@ -165,12 +165,17 @@ instance Text Version where
                                 (map Disp.int $ versionNumbers ver))
 
   parse = do
-      branch <- Parse.sepBy1 parseNat (Parse.char '.')
+      branch <- Parse.sepBy1 digits (Parse.char '.')
                 -- allow but ignore tags:
       _tags  <- Parse.many (Parse.char '-' >> Parse.munch1 isAlphaNum)
       return (mkVersion branch)
     where
-      parseNat = read `fmap` Parse.munch1 isDigit
+      digits = do
+        first <- Parse.satisfy isDigit
+        if first == '0'
+          then return 0
+          else do rest <- Parse.munch isDigit
+                  return (read (first : rest))
 
 -- | Construct 'Version' from list of version number components.
 --

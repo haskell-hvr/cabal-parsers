@@ -102,7 +102,14 @@ instance Text Version where
     = Disp.hcat (Disp.punctuate (Disp.char '.') (map Disp.int branch))
 
   parse = do
-      branch <- Parse.sepBy1 parseNat (Parse.char '.')
+      branch <- Parse.sepBy1 digits (Parse.char '.')
                 -- allow but ignore tags:
       _tags  <- Parse.many (Parse.char '-' >> Parse.munch1 isAlphaNum)
       return (Version branch [])
+    where
+      digits = do
+        first <- Parse.satisfy isDigit
+        if first == '0'
+          then return 0
+          else do rest <- Parse.munch isDigit
+                  return (read (first : rest))
