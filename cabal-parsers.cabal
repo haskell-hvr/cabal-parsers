@@ -1,0 +1,159 @@
+cabal-version:       2.0
+name:                cabal-parsers
+version:             0
+
+synopsis:            WIP / proof of concept
+license:             BSD3
+license-file:        LICENSE
+maintainer:          hvr@gnu.org
+category:            Development
+build-type:          Simple
+
+library cabal-v200
+  build-depends:       base ^>= 4.10
+  hs-source-dirs:      vendored/Cabal-2.0/
+  hs-source-dirs:      src-200/
+
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+
+  build-depends:
+    array      >= 0.1 && < 0.6,
+    base       >= 4.5 && < 5,
+    bytestring >= 0.9 && < 1,
+    containers >= 0.4 && < 0.6,
+    deepseq    >= 1.3 && < 1.5,
+    filepath   >= 1.3 && < 1.5,
+    pretty     >= 1.1 && < 1.2,
+    process    >= 1.1.0.1 && < 1.7,
+    time       >= 1.4 && < 1.9,
+    directory  >= 1.2 && < 1.4,
+    process    >= 1.1.0.2  && < 1.7,
+    binary     >= 0.7 && < 0.9,
+    unix       >= 2.5 && < 2.8
+
+  exposed-modules:
+    Cabal.Parser.V200
+
+  other-modules:
+    -- fake
+    Paths_Cabal
+
+  other-modules:
+    -- these are our main entry points we care about
+    Distribution.PackageDescription.Check
+    Distribution.PackageDescription.Parse
+    Distribution.PackageDescription.PrettyPrint
+
+    -- these are transitive imports...
+    Distribution.Backpack
+    Distribution.Compat.Binary
+    Distribution.Compat.CopyFile
+    Distribution.Compat.Environment
+    Distribution.Compat.Exception
+    Distribution.Compat.Graph
+    Distribution.Compat.Internal.TempFile
+    Distribution.Compat.Map.Strict
+    Distribution.Compat.MonadFail
+    Distribution.Compat.Prelude
+    Distribution.Compat.ReadP
+    Distribution.Compat.Semigroup
+    Distribution.Compat.Stack
+    Distribution.Compiler
+    Distribution.GetOpt
+    Distribution.InstalledPackageInfo
+    Distribution.License
+    Distribution.ModuleName
+    Distribution.Package
+    Distribution.PackageDescription
+    Distribution.PackageDescription.Configuration
+    Distribution.PackageDescription.Utils
+    Distribution.ParseUtils
+    Distribution.PrettyUtils
+    Distribution.ReadE
+    Distribution.Simple.BuildPaths
+    Distribution.Simple.BuildToolDepends
+    Distribution.Simple.CCompiler
+    Distribution.Simple.Command
+    Distribution.Simple.Compiler
+    Distribution.Simple.InstallDirs
+    Distribution.Simple.LocalBuildInfo
+    Distribution.Simple.PackageIndex
+    Distribution.Simple.Program
+    Distribution.Simple.Program.Builtin
+    Distribution.Simple.Program.Db
+    Distribution.Simple.Program.Find
+    Distribution.Simple.Program.Internal
+    Distribution.Simple.Program.Run
+    Distribution.Simple.Program.Types
+    Distribution.Simple.Setup
+    Distribution.Simple.Utils
+    Distribution.System
+    Distribution.Text
+    Distribution.Types.AbiHash
+    Distribution.Types.Benchmark
+    Distribution.Types.BenchmarkInterface
+    Distribution.Types.BenchmarkType
+    Distribution.Types.BuildInfo
+    Distribution.Types.BuildType
+    Distribution.Types.Component
+    Distribution.Types.ComponentId
+    Distribution.Types.ComponentLocalBuildInfo
+    Distribution.Types.ComponentName
+    Distribution.Types.ComponentRequestedSpec
+    Distribution.Types.CondTree
+    Distribution.Types.Condition
+    Distribution.Types.Dependency
+    Distribution.Types.DependencyMap
+    Distribution.Types.ExeDependency
+    Distribution.Types.Executable
+    Distribution.Types.ExecutableScope
+    Distribution.Types.ForeignLib
+    Distribution.Types.ForeignLibOption
+    Distribution.Types.ForeignLibType
+    Distribution.Types.GenericPackageDescription
+    Distribution.Types.HookedBuildInfo
+    Distribution.Types.IncludeRenaming
+    Distribution.Types.LegacyExeDependency
+    Distribution.Types.Library
+    Distribution.Types.LocalBuildInfo
+    Distribution.Types.Mixin
+    Distribution.Types.Module
+    Distribution.Types.ModuleReexport
+    Distribution.Types.ModuleRenaming
+    Distribution.Types.MungedPackageId
+    Distribution.Types.MungedPackageName
+    Distribution.Types.PackageDescription
+    Distribution.Types.PackageId
+    Distribution.Types.PackageName
+    Distribution.Types.PkgconfigDependency
+    Distribution.Types.PkgconfigName
+    Distribution.Types.SetupBuildInfo
+    Distribution.Types.SourceRepo
+    Distribution.Types.TargetInfo
+    Distribution.Types.TestSuite
+    Distribution.Types.TestSuiteInterface
+    Distribution.Types.TestType
+    Distribution.Types.UnitId
+    Distribution.Types.UnqualComponentName
+    Distribution.Utils.Base62
+    Distribution.Utils.Generic
+    Distribution.Utils.NubList
+    Distribution.Utils.ShortText
+    Distribution.Utils.String
+    Distribution.Verbosity
+    Distribution.Version
+    Language.Haskell.Extension
+
+library
+  build-depends:       base ^>= 4.10, cabal-v200
+--  hs-source-dirs:      src
+  default-language:    Haskell2010
+
+  reexported-modules:  Cabal.Parser.V200
+
+
+executable test-parse
+  default-language:    Haskell2010
+  build-depends:       base ^>= 4.10, cabal-parsers
+  main-is: Main.hs
