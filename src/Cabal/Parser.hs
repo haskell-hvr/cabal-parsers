@@ -18,6 +18,7 @@ import           Distribution.PackageDescription.Parse (parseGenericPackageDescr
 import           Distribution.ParseUtils               (ParseResult (..))
 import           Distribution.Version                  (mkVersion)
 
+import qualified Cabal.Parser.V124                     as V124
 import qualified Cabal.Parser.V200                     as V200
 
 unpackUTF8 :: ByteString -> String
@@ -38,7 +39,8 @@ compatParseGenericPackageDescription bs = case parseGenericPackageDescription (u
  where
    go v = msum $ [ goV200 | v < mkVersion [2,1]  ]
               ++ [ goV124 | v < mkVersion [1,25] ]
-              ++ [ goV122 | v < mkVersion [1,23] ]
+              -- NB: cabal spec versions prior to cabal-version:2.0 need to be parseable by older parsers as well
+              ++ [ goV122 | v < mkVersion [1,25] ]
 
    goV200 :: Maybe PError
    goV200 = case V200.parseGenericPackageDescription (unpackUTF8 bs) of
@@ -52,7 +54,15 @@ compatParseGenericPackageDescription bs = case parseGenericPackageDescription (u
        convertPerr (V200.TabsError lno)        = TabsError                       lno
 
    goV124 :: Maybe PError
-   goV124 = Nothing -- TODO
+   goV124 = case V124.parsePackageDescription (unpackUTF8 bs) of
+              V124.ParseFailed perr -> Just $! convertPerr perr
+              V124.ParseOk _ _      -> Nothing
+     where
+       convertPerr :: V124.PError -> PError
+       convertPerr (V124.AmbiguousParse s lno) = AmbiguousParse ("[v1.24] " ++ s) lno
+       convertPerr (V124.FromString s mlno)    = FromString     ("[v1.24] " ++ s) mlno
+       convertPerr (V124.NoParse s lno)        = NoParse        ("[v1.24] " ++ s) lno
+       convertPerr (V124.TabsError lno)        = TabsError                        lno
 
    goV122 :: Maybe PError
    goV122 = Nothing -- TODO
