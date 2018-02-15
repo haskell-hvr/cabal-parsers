@@ -18,6 +18,7 @@ import           Distribution.PackageDescription.Parse (parseGenericPackageDescr
 import           Distribution.ParseUtils               (ParseResult (..))
 import           Distribution.Version                  (mkVersion)
 
+import qualified Cabal.Parser.V122                     as V122
 import qualified Cabal.Parser.V124                     as V124
 import qualified Cabal.Parser.V200                     as V200
 
@@ -65,4 +66,12 @@ compatParseGenericPackageDescription bs = case parseGenericPackageDescription (u
        convertPerr (V124.TabsError lno)        = TabsError                        lno
 
    goV122 :: Maybe PError
-   goV122 = Nothing -- TODO
+   goV122 = case V122.parsePackageDescription (unpackUTF8 bs) of
+              V122.ParseFailed perr -> Just $! convertPerr perr
+              V122.ParseOk _ _      -> Nothing
+     where
+       convertPerr :: V122.PError -> PError
+       convertPerr (V122.AmbiguousParse s lno) = AmbiguousParse ("[v1.22] " ++ s) lno
+       convertPerr (V122.FromString s mlno)    = FromString     ("[v1.22] " ++ s) mlno
+       convertPerr (V122.NoParse s lno)        = NoParse        ("[v1.22] " ++ s) lno
+       convertPerr (V122.TabsError lno)        = TabsError                        lno
