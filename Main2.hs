@@ -22,7 +22,7 @@ import           System.FilePath
 
 import           Data.List                (isInfixOf, isPrefixOf)
 
-import           Cabal.Parser.V200
+import           Cabal.Parser
 
 
 -- | Read tarball lazily (and possibly decompress)
@@ -50,11 +50,6 @@ decUtf8 raw = case T.unpack t of
   where
     t = T.decodeUtf8With T.lenientDecode raw
 
-parseCab :: ByteString -> GenericPackageDescription
-parseCab raw = case parseGenericPackageDescription (decUtf8 raw) of
-                        ParseOk _ gpd -> gpd
-                        _             -> error "parseCab"
-
 main :: IO ()
 main = do
     putStrLn "working..."
@@ -79,7 +74,7 @@ main = do
 
                     -- sv' <- evaluate $ parseSpecVer raw
                     when True $ do
-                      case parseGenericPackageDescription (decUtf8 raw) of
+                      case compatParseGenericPackageDescription raw of
                         ParseOk _ gpd -> do
                             -- let svr = specVersionRaw $ packageDescription gpd
                             --     sv  = specVersion $ packageDescription gpd
