@@ -1,43 +1,46 @@
-cabal-version:       2.0
+cabal-version:       2.1
 name:                cabal-parsers
 version:             0
 
 synopsis:            WIP / proof of concept
-license:             BSD3
+license:             BSD-3-Clause
 license-file:        LICENSE
 maintainer:          hvr@gnu.org
 category:            Development
 build-type:          Simple
 
-library cabal-v200
-  build-depends:       base ^>= 4.10
-  hs-source-dirs:      vendored/Cabal-2.0/
-  hs-source-dirs:      src-200/
-
-  default-language:    Haskell2010
+-- common block for vendored internal lib:Cabal sub-libs
+common cabal-vXXX
   ghc-options:         -Wall -fno-ignore-asserts
-
-  build-depends:
-    array      >= 0.1 && < 0.6,
-    base       >= 4.5 && < 5,
-    bytestring >= 0.9 && < 0.11,
-    containers >= 0.4 && < 0.6,
-    deepseq    >= 1.3 && < 1.5,
-    filepath   >= 1.3 && < 1.5,
-    pretty     >= 1.1 && < 1.2,
-    process    >= 1.1.0.1 && < 1.7,
-    time       >= 1.4 && < 1.9,
-    directory  >= 1.2 && < 1.4,
-    process    >= 1.1.0.2  && < 1.7,
-    binary     >= 0.7 && < 0.9,
-    unix       >= 2.5 && < 2.8
-
-  exposed-modules:
-    Cabal.Parser.V200
 
   other-modules:
     -- fake
     Paths_Cabal
+
+  build-depends:
+    , array        ^>= 0.5.2
+    , base         ^>= 4.10.0
+    , binary       ^>= 0.8.5
+    , bytestring   ^>= 0.10.8
+    , containers   ^>= 0.5.10
+    , deepseq      ^>= 1.4.3
+    , directory    ^>= 1.3.0
+    , filepath     ^>= 1.4.1
+    , pretty       ^>= 1.1.3
+    , process      ^>= 1.6.1
+    , time         ^>= 1.8
+    , unix         ^>= 2.7.2
+
+library cabal-v200
+  import: cabal-vXXX
+
+  hs-source-dirs:      vendored/Cabal-2.0/
+  hs-source-dirs:      src-200/
+
+  default-language:    Haskell2010
+
+  exposed-modules:
+    Cabal.Parser.V200
 
   other-modules:
     -- these are our main entry points we care about
@@ -146,26 +149,12 @@ library cabal-v200
     Language.Haskell.Extension
 
 library cabal-v124
-  build-depends:       base ^>= 4.10
+  import: cabal-vXXX
+
   hs-source-dirs:      vendored/Cabal-1.24/
   hs-source-dirs:      src-124/
 
   default-language:    Haskell98
-  ghc-options:         -Wall -fno-ignore-asserts
-
-  build-depends:
-    array      >= 0.1 && < 0.6,
-    base       >= 4.5 && < 5,
-    bytestring >= 0.9 && < 1,
-    containers >= 0.4 && < 0.6,
-    deepseq    >= 1.3 && < 1.5,
-    directory  >= 1.1 && < 1.4,
-    filepath   >= 1.3 && < 1.5,
-    pretty     >= 1.1 && < 1.2,
-    process    >= 1.1.0.1 && < 1.7,
-    time       >= 1.4 && < 1.9,
-    unix       >= 2.5 && < 2.8,
-    binary     >= 0.7 && < 0.9
 
   exposed-modules:
     Cabal.Parser.V124
@@ -207,34 +196,16 @@ library cabal-v124
     Language.Haskell.Extension
 
 library cabal-v122
-  build-depends:       base ^>= 4.10
+  import: cabal-vXXX
+
   hs-source-dirs:      vendored/Cabal-1.22/
   hs-source-dirs:      src-122/
 
   default-language:    Haskell98
   default-extensions:  CPP
-  ghc-options:         -Wall -fno-ignore-asserts
-
-  build-depends:
-    base       >= 4.4 && < 5,
-    deepseq    >= 1.3 && < 1.5,
-    filepath   >= 1   && < 1.5,
-    directory  >= 1   && < 1.4,
-    process    >= 1.1.0.1 && < 1.7,
-    time       >= 1.1 && < 1.9,
-    containers >= 0.1 && < 0.6,
-    array      >= 0.1 && < 0.6,
-    pretty     >= 1   && < 1.2,
-    bytestring >= 0.9,
-    binary     >= 0.7 && < 0.9,
-    unix       >= 2.0 && < 2.8
 
   exposed-modules:
     Cabal.Parser.V122
-
-  other-modules:
-    -- fake
-    Paths_Cabal
 
   other-modules:
     -- these are our main entry points we care about
@@ -269,44 +240,52 @@ library cabal-v122
 
 ----------------------------------------------------------------------------
 
+-- non-vendored component defaults
+common nv-defaults
+  default-language:    Haskell2010
+  ghc-options:        -Wall
+
+  build-depends:
+    -- inherited dependencies
+    , base
+    , bytestring
+    , directory
+    , filepath
+    -- extra deps
+    , Cabal ^>= 2.0
+    , text  ^>= 1.2.3
+
 library
-  build-depends:       base
-                     , cabal-v122
-                     , cabal-v124
-                     , cabal-v200
-                     , Cabal ^>= 2.0
-                     , text  ^>= 1.2.3
-                     , bytestring
+  import: nv-defaults
 
   hs-source-dirs:      src
-  default-language:    Haskell2010
 
-  exposed-modules:     Cabal.Parser
-  reexported-modules:  Cabal.Parser.V200
-  reexported-modules:  Cabal.Parser.V124
-  reexported-modules:  Cabal.Parser.V122
+  exposed-modules:
+      Cabal.Parser
 
-  ghc-options: -Wall
+  reexported-modules:
+    , Cabal.Parser.V200
+    , Cabal.Parser.V124
+    , Cabal.Parser.V122
+
+  build-depends:
+    , cabal-v122
+    , cabal-v124
+    , cabal-v200
 
 executable test-parse
-  default-language:    Haskell2010
-  build-depends:       base
-                     , bytestring
-                     , cabal-parsers
-                     , Cabal
+  import: nv-defaults
 
   main-is: Main.hs
+  build-depends: cabal-parsers
 
 executable test-parse2
-  default-language:    Haskell2010
-  main-is:             Main2.hs
+  import: nv-defaults
 
-  build-depends:       cabal-parsers
-                     , text
-                     , base
-                     , bytestring
+  main-is: Main2.hs
+  build-depends: cabal-parsers
 
-  build-depends:       tar        ^>= 0.5.0
-                     , zlib       ^>= 0.6.1
-                     , directory
-                     , filepath
+  -- extra dependencies
+  build-depends:
+    , tar        ^>= 0.5.0
+    , zlib       ^>= 0.6.1
