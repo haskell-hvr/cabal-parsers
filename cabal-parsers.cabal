@@ -1,4 +1,4 @@
-cabal-version:       2.1
+cabal-version:       2.2
 name:                cabal-parsers
 version:             0
 
@@ -7,7 +7,6 @@ license:             BSD-3-Clause
 license-file:        LICENSE
 maintainer:          hvr@gnu.org
 category:            Development
-build-type:          Simple
 
 -- common block for vendored internal lib:Cabal sub-libs
 common cabal-vXXX
@@ -252,7 +251,7 @@ common nv-defaults
     , directory
     , filepath
     -- extra deps
-    , Cabal ^>= 2.0
+    , Cabal ^>= 2.2
     , text  ^>= 1.2.3
 
 library

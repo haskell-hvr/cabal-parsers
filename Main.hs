@@ -14,10 +14,10 @@ main = do
   forM_ argv $ \fn -> do
     s <- B.readFile fn
     case compatParseGenericPackageDescription s of
-      ParseOk warnings _gpd -> do
+      (warnings, Right _gpd) -> do
         putStrLn $ concat ["OK (", show (length warnings), " warnings)"]
-      ParseFailed perr -> do
+      (_, Left (mspecver,errs)) -> do
         putStrLn $ "FAILED"
-        print perr
+        print (mspecver, errs)
 
   return ()

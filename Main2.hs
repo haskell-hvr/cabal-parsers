@@ -2,25 +2,20 @@
 
 module Main where
 
-import qualified Codec.Archive.Tar        as Tar
-import qualified Codec.Archive.Tar.Entry  as Tar
-import qualified Codec.Compression.GZip   as GZip
+import qualified Codec.Archive.Tar       as Tar
+import qualified Codec.Archive.Tar.Entry as Tar
+import qualified Codec.Compression.GZip  as GZip
 import           Control.Exception
 import           Control.Monad
-import           Control.Monad
-import           Data.ByteString          (ByteString)
-import qualified Data.ByteString          as BS
-import qualified Data.ByteString.Char8    as BC8
-import qualified Data.ByteString.Lazy     as BSL
-import qualified Data.Text                as T
-import qualified Data.Text.Encoding       as T
-import qualified Data.Text.Encoding.Error as T
-import           Data.Word
+import           Data.ByteString         (ByteString)
+-- import qualified Data.ByteString          as BS
+-- import qualified Data.ByteString.Char8    as BC8
+import qualified Data.ByteString.Lazy    as BSL
+-- import qualified Data.Text                as T
+-- import qualified Data.Text.Encoding       as T
+-- import qualified Data.Text.Encoding.Error as T
 import           System.Directory
-import           System.Environment
 import           System.FilePath
-
-import           Data.List                (isInfixOf, isPrefixOf)
 
 import           Cabal.Parser
 
@@ -43,12 +38,14 @@ filterEnts (e:es) =case Tar.entryContent e of
     where
       efn = Tar.entryPath e
 
+{- not needed anymore
 decUtf8 :: ByteString -> String
 decUtf8 raw = case T.unpack t of
                 '\65279':cs -> cs
                 cs          -> cs
   where
     t = T.decodeUtf8With T.lenientDecode raw
+-}
 
 main :: IO ()
 main = do
@@ -75,15 +72,16 @@ main = do
                     -- sv' <- evaluate $ parseSpecVer raw
                     when True $ do
                       case compatParseGenericPackageDescription raw of
-                        ParseOk _ gpd -> do
+                        (_, Right _gpd) -> do
                             -- let svr = specVersionRaw $ packageDescription gpd
                             --     sv  = specVersion $ packageDescription gpd
                             -- print (Tar.entryTime e, Tar.entryPath e)
                             pure ()
 
-                        ParseFailed perr -> do
+                        (_, Left (mspecver, perr)) -> do
                             putStrLn "*** WOAH!"
                             print (Tar.entryTime e, Tar.entryPath e)
+                            putStrLn ("parser specver: " ++ show mspecver)
                             putStrLn ("parser fail: " ++ show perr)
 
               | otherwise -> pure ()
