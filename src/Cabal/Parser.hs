@@ -25,6 +25,7 @@ import           Distribution.Parsec.Common             (PError (..),
 import           Distribution.Parsec.ParseResult        ()
 import           Distribution.Version                   (Version, mkVersion)
 
+import qualified Cabal.Parser.V118                      as V118
 import qualified Cabal.Parser.V120                      as V120
 import qualified Cabal.Parser.V122                      as V122
 import qualified Cabal.Parser.V124                      as V124
@@ -54,6 +55,7 @@ compatParseGenericPackageDescription bs = case runParseResult (parseGenericPacka
               -- NB: cabal spec versions prior to cabal-version:2.0 need to be parseable by older parsers as well
               ++ [ goV122 | v < mkVersion [1,25] ]
               ++ [ goV120 | v < mkVersion [1,25] ]
+              ++ [ goV118 | v < mkVersion [1,25] ]
 
    mlno2pos :: Maybe Int -> Position
    mlno2pos Nothing    = zeroPos
@@ -98,3 +100,13 @@ compatParseGenericPackageDescription bs = case runParseResult (parseGenericPacka
        convertPerr pe = PError pos ("[v1.20] " ++ msg)
          where
            (mlno2pos -> pos, msg) = V120.locatedErrorMsg pe
+
+   goV118 :: Maybe PError
+   goV118 = case V118.parsePackageDescription (unpackUTF8 bs) of
+              V118.ParseFailed perr -> Just $! convertPerr perr
+              V118.ParseOk _ _      -> Nothing
+     where
+       convertPerr :: V118.PError -> PError
+       convertPerr pe = PError pos ("[v1.20] " ++ msg)
+         where
+           (mlno2pos -> pos, msg) = V118.locatedErrorMsg pe
