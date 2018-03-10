@@ -237,6 +237,47 @@ library cabal-v122
     Distribution.Version
     Language.Haskell.Extension
 
+library cabal-v120
+  import: cabal-vXXX
+
+  hs-source-dirs:      vendored/Cabal-1.20/
+  hs-source-dirs:      src-120/
+
+  default-language:    Haskell98
+  default-extensions:  CPP
+
+  exposed-modules:
+    Cabal.Parser.V120
+
+  other-modules:
+    -- these are our main entry points we care about
+    Distribution.PackageDescription.Check
+    Distribution.PackageDescription.Parse
+    Distribution.PackageDescription.PrettyPrint
+
+    -- these are transitive imports...
+    Distribution.Compat.CopyFile
+    Distribution.Compat.Exception
+    Distribution.Compat.ReadP
+    Distribution.Compat.TempFile
+    Distribution.Compiler
+    Distribution.InstalledPackageInfo
+    Distribution.License
+    Distribution.ModuleName
+    Distribution.Package
+    Distribution.PackageDescription
+    Distribution.PackageDescription.Configuration
+    Distribution.PackageDescription.Utils
+    Distribution.ParseUtils
+    Distribution.ReadE
+    Distribution.Simple.CCompiler
+    Distribution.Simple.Utils
+    Distribution.System
+    Distribution.Text
+    Distribution.Verbosity
+    Distribution.Version
+    Language.Haskell.Extension
+
 ----------------------------------------------------------------------------
 
 -- non-vendored component defaults
@@ -263,11 +304,13 @@ library
       Cabal.Parser
 
   reexported-modules:
-    , Cabal.Parser.V200
-    , Cabal.Parser.V124
+    , Cabal.Parser.V120
     , Cabal.Parser.V122
+    , Cabal.Parser.V124
+    , Cabal.Parser.V200
 
   build-depends:
+    , cabal-v120
     , cabal-v122
     , cabal-v124
     , cabal-v200
