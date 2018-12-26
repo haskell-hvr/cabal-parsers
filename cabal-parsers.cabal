@@ -504,6 +504,7 @@ common nv-defaults
     , base
     , bytestring
     , directory
+    , deepseq
     , filepath
     -- extra deps
     , Cabal ^>= 2.2
