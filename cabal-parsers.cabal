@@ -549,4 +549,4 @@ executable test-parse2
   -- extra dependencies
   build-depends:
     , tar        ^>= 0.5.0
-    , zlib       ^>= 0.6.1
+    , zlib       ^>= 0.6.1 || ^>= 0.5.3
