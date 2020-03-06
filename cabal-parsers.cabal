@@ -30,6 +30,193 @@ common cabal-vXXX
     , time         ^>= 1.8
     , unix         ^>= 2.7.2
 
+library cabal-v300
+  import: cabal-vXXX
+
+  hs-source-dirs:      vendored/Cabal-3.0/
+  hs-source-dirs:      src-300/
+
+  default-language:    Haskell2010
+
+  build-depends:
+    , transformers
+    , parsec
+    , mtl
+    , text
+
+  exposed-modules:
+    Cabal.Parser.V300
+
+  other-modules:
+    -- these are our main entry points we care about
+    Distribution.PackageDescription.Check
+    Distribution.PackageDescription.Parsec
+    Distribution.PackageDescription.PrettyPrint
+
+    -- these are transitive imports...
+    Distribution.Backpack
+    Distribution.CabalSpecVersion
+    Distribution.Compat.Binary
+    Distribution.Compat.CharParsing
+    Distribution.Compat.CopyFile
+    Distribution.Compat.DList
+    Distribution.Compat.Environment
+    Distribution.Compat.Exception
+    Distribution.Compat.Graph
+    Distribution.Compat.Internal.TempFile
+    Distribution.Compat.Lens
+    Distribution.Compat.MonadFail
+    Distribution.Compat.Newtype
+    Distribution.Compat.Parsing
+    Distribution.Compat.Prelude
+    Distribution.Compat.Semigroup
+    Distribution.Compat.Stack
+    Distribution.Compiler
+    Distribution.FieldGrammar
+    Distribution.FieldGrammar.Class
+    Distribution.FieldGrammar.FieldDescrs
+    Distribution.FieldGrammar.Parsec
+    Distribution.FieldGrammar.Pretty
+    Distribution.Fields
+    Distribution.Fields.ConfVar
+    Distribution.Fields.Field
+    Distribution.Fields.Lexer
+    Distribution.Fields.LexerMonad
+    Distribution.Fields.ParseResult
+    Distribution.Fields.Parser
+    Distribution.Fields.Pretty
+    Distribution.GetOpt
+    Distribution.InstalledPackageInfo
+    Distribution.License
+    Distribution.ModuleName
+    Distribution.Package
+    Distribution.PackageDescription
+    Distribution.PackageDescription.Configuration
+    Distribution.PackageDescription.FieldGrammar
+    Distribution.PackageDescription.Quirks
+    Distribution.PackageDescription.Utils
+    Distribution.Parsec
+    Distribution.Parsec.Error
+    Distribution.Parsec.FieldLineStream
+    Distribution.Parsec.Newtypes
+    Distribution.Parsec.Position
+    Distribution.Parsec.Warning
+    Distribution.Pretty
+    Distribution.ReadE
+    Distribution.SPDX
+    Distribution.SPDX.License
+    Distribution.SPDX.LicenseExceptionId
+    Distribution.SPDX.LicenseExpression
+    Distribution.SPDX.LicenseId
+    Distribution.SPDX.LicenseListVersion
+    Distribution.SPDX.LicenseReference
+    Distribution.Simple.BuildPaths
+    Distribution.Simple.BuildToolDepends
+    Distribution.Simple.CCompiler
+    Distribution.Simple.Command
+    Distribution.Simple.Compiler
+    Distribution.Simple.Flag
+    Distribution.Simple.GHC.ImplInfo
+    Distribution.Simple.Glob
+    Distribution.Simple.InstallDirs
+    Distribution.Simple.InstallDirs.Internal
+    Distribution.Simple.LocalBuildInfo
+    Distribution.Simple.PackageIndex
+    Distribution.Simple.Program
+    Distribution.Simple.Program.Builtin
+    Distribution.Simple.Program.Db
+    Distribution.Simple.Program.Find
+    Distribution.Simple.Program.GHC
+    Distribution.Simple.Program.Internal
+    Distribution.Simple.Program.Run
+    Distribution.Simple.Program.Types
+    Distribution.Simple.Setup
+    Distribution.Simple.Utils
+    Distribution.System
+    Distribution.Text
+    Distribution.Types.AbiDependency
+    Distribution.Types.AbiHash
+    Distribution.Types.Benchmark
+    Distribution.Types.Benchmark.Lens
+    Distribution.Types.BenchmarkInterface
+    Distribution.Types.BenchmarkType
+    Distribution.Types.BuildInfo
+    Distribution.Types.BuildInfo.Lens
+    Distribution.Types.BuildType
+    Distribution.Types.Component
+    Distribution.Types.ComponentId
+    Distribution.Types.ComponentLocalBuildInfo
+    Distribution.Types.ComponentName
+    Distribution.Types.ComponentRequestedSpec
+    Distribution.Types.CondTree
+    Distribution.Types.Condition
+    Distribution.Types.Dependency
+    Distribution.Types.DependencyMap
+    Distribution.Types.ExeDependency
+    Distribution.Types.Executable
+    Distribution.Types.Executable.Lens
+    Distribution.Types.ExecutableScope
+    Distribution.Types.ExposedModule
+    Distribution.Types.ForeignLib
+    Distribution.Types.ForeignLib.Lens
+    Distribution.Types.ForeignLibOption
+    Distribution.Types.ForeignLibType
+    Distribution.Types.GenericPackageDescription
+    Distribution.Types.GenericPackageDescription.Lens
+    Distribution.Types.GivenComponent
+    Distribution.Types.HookedBuildInfo
+    Distribution.Types.IncludeRenaming
+    Distribution.Types.InstalledPackageInfo
+    Distribution.Types.InstalledPackageInfo.FieldGrammar
+    Distribution.Types.InstalledPackageInfo.Lens
+    Distribution.Types.LegacyExeDependency
+    Distribution.Types.Lens
+    Distribution.Types.Library
+    Distribution.Types.Library.Lens
+    Distribution.Types.LibraryName
+    Distribution.Types.LibraryVisibility
+    Distribution.Types.LocalBuildInfo
+    Distribution.Types.Mixin
+    Distribution.Types.Module
+    Distribution.Types.ModuleReexport
+    Distribution.Types.ModuleRenaming
+    Distribution.Types.MungedPackageId
+    Distribution.Types.MungedPackageName
+    Distribution.Types.PackageDescription
+    Distribution.Types.PackageDescription.Lens
+    Distribution.Types.PackageId
+    Distribution.Types.PackageId.Lens
+    Distribution.Types.PackageName
+    Distribution.Types.PkgconfigDependency
+    Distribution.Types.PkgconfigName
+    Distribution.Types.PkgconfigVersion
+    Distribution.Types.PkgconfigVersionRange
+    Distribution.Types.SetupBuildInfo
+    Distribution.Types.SetupBuildInfo.Lens
+    Distribution.Types.SourceRepo
+    Distribution.Types.SourceRepo.Lens
+    Distribution.Types.TargetInfo
+    Distribution.Types.TestSuite
+    Distribution.Types.TestSuite.Lens
+    Distribution.Types.TestSuiteInterface
+    Distribution.Types.TestType
+    Distribution.Types.UnitId
+    Distribution.Types.UnqualComponentName
+    Distribution.Types.Version
+    Distribution.Types.VersionInterval
+    Distribution.Types.VersionRange
+    Distribution.Types.VersionRange.Internal
+    Distribution.Utils.Base62
+    Distribution.Utils.Generic
+    Distribution.Utils.IOData
+    Distribution.Utils.NubList
+    Distribution.Utils.ShortText
+    Distribution.Utils.String
+    Distribution.Verbosity
+    Distribution.Verbosity.Internal
+    Distribution.Version
+    Language.Haskell.Extension
+
 library cabal-v220
   import: cabal-vXXX
 
@@ -507,7 +694,7 @@ common nv-defaults
     , deepseq
     , filepath
     -- extra deps
-    , Cabal ^>= 2.4.1
+    , Cabal ^>= 3.0.0.0
     , text  ^>= 1.2.3
 
 library
@@ -525,7 +712,8 @@ library
     , Cabal.Parser.V124
     , Cabal.Parser.V200
     , Cabal.Parser.V220
-
+    , Cabal.Parser.V300
+    
   build-depends:
     , cabal-v118
     , cabal-v120
@@ -533,6 +721,7 @@ library
     , cabal-v124
     , cabal-v200
     , cabal-v220
+    , cabal-v300
 
 executable test-parse
   import: nv-defaults
