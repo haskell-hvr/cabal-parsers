@@ -745,6 +745,7 @@ library
     , Cabal.Parser.V124
     , Cabal.Parser.V200
     , Cabal.Parser.V202
+    , Cabal.Parser.V204
 
   build-depends:
     , cabal-v118
@@ -753,6 +754,7 @@ library
     , cabal-v124
     , cabal-v200
     , cabal-v202
+    , cabal-v204
 
 executable test-parse
   import: nv-defaults
