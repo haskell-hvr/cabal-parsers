@@ -28,7 +28,7 @@ import qualified Cabal.Parser.V120                      as V120
 import qualified Cabal.Parser.V122                      as V122
 import qualified Cabal.Parser.V124                      as V124
 import qualified Cabal.Parser.V200                      as V200
-import qualified Cabal.Parser.V220                      as V220
+import qualified Cabal.Parser.V202                      as V202
 
 unpackUTF8 :: ByteString -> String
 unpackUTF8 raw = case T.unpack t of
@@ -49,7 +49,7 @@ compatParseGenericPackageDescription bs = case runParseResult (parseGenericPacka
                                                 Nothing    -> pok
                                                 Just perrs -> force ([], Left (Just sv, perrs))
  where
-   go v = msum $ [ goV220 | v < mkVersion [2,3]  ]
+   go v = msum $ [ goV202 | v < mkVersion [2,3]  ]
               ++ [ goV200 | v < mkVersion [2,1]  ]
               ++ [ goV124 | v < mkVersion [1,25] ]
               -- NB: cabal spec versions prior to cabal-version:2.0 need to be parseable by older parsers as well
@@ -61,13 +61,13 @@ compatParseGenericPackageDescription bs = case runParseResult (parseGenericPacka
    mlno2pos Nothing    = zeroPos
    mlno2pos (Just lno) = Position lno 0
 
-   goV220 :: Maybe [PError]
-   goV220 = case V220.runParseResult $ V220.parseGenericPackageDescription bs of
+   goV202 :: Maybe [PError]
+   goV202 = case V202.runParseResult $ V202.parseGenericPackageDescription bs of
               (_pwarns, Right _)   -> Nothing
               (_, Left (_, perrs)) -> Just (map convertPerr perrs)
      where
-       convertPerr :: V220.PError -> PError
-       convertPerr (V220.PError (V220.Position lno cno) msg) = PError pos ("[v2.2] " ++ msg)
+       convertPerr :: V202.PError -> PError
+       convertPerr (V202.PError (V202.Position lno cno) msg) = PError pos ("[v2.2] " ++ msg)
          where
            pos = Position lno cno
 

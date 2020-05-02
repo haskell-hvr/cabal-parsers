@@ -1,4 +1,4 @@
-module Cabal.Parser.V220
+module Cabal.Parser.V202
     ( module X
     ) where
 

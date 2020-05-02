@@ -250,11 +250,11 @@ library cabal-v204
     Distribution.Version
     Language.Haskell.Extension
 
-library cabal-v220
+library cabal-v202
   import: cabal-vXXX
 
   hs-source-dirs:      vendored/Cabal-2.2/
-  hs-source-dirs:      src-220/
+  hs-source-dirs:      src-202/
 
   default-language:    Haskell2010
 
@@ -265,7 +265,7 @@ library cabal-v220
     , text
 
   exposed-modules:
-    Cabal.Parser.V220
+    Cabal.Parser.V202
 
   other-modules:
     -- these are our main entry points we care about
@@ -744,7 +744,7 @@ library
     , Cabal.Parser.V122
     , Cabal.Parser.V124
     , Cabal.Parser.V200
-    , Cabal.Parser.V220
+    , Cabal.Parser.V202
 
   build-depends:
     , cabal-v118
@@ -752,7 +752,7 @@ library
     , cabal-v122
     , cabal-v124
     , cabal-v200
-    , cabal-v220
+    , cabal-v202
 
 executable test-parse
   import: nv-defaults
