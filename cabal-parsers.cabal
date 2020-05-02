@@ -549,7 +549,7 @@ common nv-defaults
     , deepseq
     , filepath
     -- extra deps
-    , Cabal ^>= 2.4.1
+    , Cabal ^>= 3.0.2
     , text  ^>= 1.2.3
 
 library

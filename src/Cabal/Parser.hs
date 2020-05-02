@@ -18,11 +18,9 @@ import           Distribution.PackageDescription        (GenericPackageDescripti
                                                          specVersion)
 import           Distribution.PackageDescription.Parsec (parseGenericPackageDescription,
                                                          runParseResult)
-import           Distribution.Parsec.Common             (PError (..),
-                                                         PWarning (..),
-                                                         Position (Position),
-                                                         zeroPos)
-import           Distribution.Parsec.ParseResult        ()
+import           Distribution.Parsec.Error              (PError (..))
+import           Distribution.Parsec.Position           (Position (Position), zeroPos)
+import           Distribution.Parsec.Warning            (PWarning (..))
 import           Distribution.Version                   (Version, mkVersion)
 
 import qualified Cabal.Parser.V118                      as V118
