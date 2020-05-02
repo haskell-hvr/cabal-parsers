@@ -8,6 +8,48 @@ license-file:        LICENSE
 maintainer:          hvr@gnu.org
 category:            Development
 
+----------------------------------------------------------------------------
+-- # Notes
+--
+-- ## Upgrading to new major Cabal version
+--
+-- Each of the following steps ought to be a separate Git commit
+--
+--  1. Update `Cabal` version constraint in `nv-defaults` stanza to
+--     new major version of lib:Cabal and review & adapt glue-code in
+--     src/Cabal/Parser.hs accordingly
+--
+--  2. Copy the `Cabal/` folder latest Git branch-tip of the previous
+--     major release into `vendored/Cabal-X.Y` (`X.Y` is the
+--     respective major version of lib:Cabal) and remove copied
+--     redundant files via
+--
+--       rm -rf doc/ tests/ prologue.txt README.md Setup.hs`
+--
+--     Register vendored folder to the Git index via
+--
+--       git add vendored/Cabal-X.Y
+--
+--     Add a respective entry-point glue-code modules to
+--
+--       src-XYY/Path_Cabal.hs
+--       src-XYY/Cabal/Parser/VXYY.hs
+--
+--     (consult/compare to previous commits which performed this step
+--     and adapt accordingly)
+--
+--     Add new `library cabal-vXYY` stanza (follow the scheme of the
+--     prior existing stanzas), and initially list only the
+--     `Cabal.Parser.V204` module and the few Cabal modules that
+--     module imports directly; then let ghc's -Wmissing-home-modules
+--     warning provide you the rest of modules to include as
+--     `other-modules`.
+--
+--  3. Finally, hook up vendored legacy Cabal version from step 2 into
+--     the parsing pipeline in src/Cabal/Parser.hs
+--
+----------------------------------------------------------------------------
+
 -- common block for vendored internal lib:Cabal sub-libs
 common cabal-vXXX
   ghc-options:         -Wall -fno-ignore-asserts
